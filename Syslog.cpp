@@ -68,7 +68,32 @@ void SyslogClass::setOwnHostname(int n) {
   //my_own_hostname = my_hostname;
 }
  
- 
+
+void SyslogClass::logger(uint8_t facility, uint8_t severity, const char tag[], const __FlashStringHelper *ifsh) {
+  String Pri;
+  PGM_P p = reinterpret_cast<PGM_P>(ifsh);
+
+  Pri="<";
+  Pri+=(8 * facility + severity);
+  Pri+=">";
+  
+  char UDPBufferPri[Pri.length()+1];
+  Pri.toCharArray(UDPBufferPri,Pri.length()+1);
+
+  SyslogUdp.beginPacket(ip_syslogserver, SYSLOG_DEFAULT_PORT);
+
+  SyslogUdp.write(UDPBufferPri);
+  SyslogUdp.write(tag);
+  SyslogUdp.write(" ");
+  while (1) {
+    unsigned char c = pgm_read_byte(p++);
+    if (c == 0) break;
+    if (!SyslogUdp.write(c))
+      break;
+  }
+  SyslogUdp.endPacket();
+}
+
  
 void SyslogClass::logger(uint8_t facility, uint8_t severity, const char tag[], const char message[]) {
 	String Pri;

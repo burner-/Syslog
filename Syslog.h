@@ -30,6 +30,7 @@ class SyslogClass {
 public:
     void setLoghost(uint8_t *);
     void setOwnHostname(int n);
+    void logger(uint8_t, uint8_t, const char[], const __FlashStringHelper *);
     void logger(uint8_t, uint8_t, const char[], const char[]);
     void logger(uint8_t, uint8_t, const char[], String&);
 private:
