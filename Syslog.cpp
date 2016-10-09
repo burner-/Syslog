@@ -26,7 +26,13 @@
 #include <Arduino.h>
 
 EthernetUDP SyslogUdp;
- 
+
+// This allows reuse exsisting udp socket for outbound traffic. 
+void SyslogClass::setLoghost(uint8_t * server_ip, EthernetUDP udpsocket) {
+    ip_syslogserver = server_ip;
+    SyslogUdp = udpsocket;
+}
+
 void SyslogClass::setLoghost(uint8_t * server_ip) {
     ip_syslogserver = server_ip;
     SyslogUdp.begin(8888);

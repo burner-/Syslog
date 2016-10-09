@@ -23,12 +23,14 @@
 
 #include <inttypes.h>
 #include <Arduino.h>
-  
+#include <EthernetUdp.h>
+
 #define SYSLOG_DEFAULT_PORT 514
 
 class SyslogClass {
 public:
     void setLoghost(uint8_t *);
+    void setLoghost(uint8_t *, EthernetUDP);
     void setOwnHostname(int n);
     void logger(uint8_t, uint8_t, const char[], const __FlashStringHelper *);
     void logger(uint8_t, uint8_t, const char[], const char[]);
